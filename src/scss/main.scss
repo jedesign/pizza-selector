@@ -1,0 +1,12 @@
+.flex {
+  display: flex;
+  max-width: 1600px;
+  width: 100%;
+  flex-direction: row;
+
+  > div {
+    flex: 1 0 0;
+    max-width: 50%;
+    width: 100%;
+  }
+}
