@@ -8,11 +8,35 @@
 	<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 	<style>
 		* {
-			font-family: 'Arial';
+			font-family: 'Jetbrains Mono';
 		}
+		/* div { 
+			height: 200px;
+			width: 300px; 
+		}  */
 	</style>
 </head>
-<body>
-<h1>Ich bin toll</h1>
+<body class="bg-gray-900 p-10">
+	<p class="text-gray-700 text-center">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
+	<h1 class="text-gray-100 text-4xl text-center m-16">Deine Pizza</h1>
+	<h1 class="text-gray-100 text-4xl text-center m-16">Deine Zutaten</h1>
+	<div class="grid grid-cols-6 max-width-screen-xl">
+		<div class="col-auto rounded overflow-hidden hover:bg-pink-500 hover:opacity-75">
+			<div class="hover:bg-pink-500"></div>
+			<img class="opacity-50" src="https://source.unsplash.com/vwPyPWuQAAk/300x200">
+		</div>
+		<div class="col-auto">
+			<img class="opacity-50" src="https://source.unsplash.com/ILBd7rOkiv0/300x200">
+		</div>
+		<div class="col-auto">
+			<img class="opacity-50" src="https://source.unsplash.com/CLtxWYH4sYs/300x200">
+		</div>
+		<div class="col-auto">
+			<img class="opacity-50" src="https://source.unsplash.com/DVRXFIH42d0/300x200">
+		</div>
+		<div class="col-auto">
+			<img class="opacity-50" src="https://source.unsplash.com/Hs5gvdM8qo8/300x200">
+		</div>
+</div>
 </body>
 </html>
