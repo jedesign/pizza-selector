@@ -1,21 +1,20 @@
 <template>
-  <div class="flex">
-    <div>
-      <h2>Pizzas</h2>
-      <ul>
-        <template v-for="pizza in filteredPizzas">
-          <pizza :pizza="pizza" />
-        </template>
-      </ul>
-    </div>
-    <div>
-      <h2>Zutaten</h2>
-      {{ selectedIngredients }}
-      <ul>
-        <template v-for="ingredient in ingredients">
-          <ingredient :data="ingredient" @toggle="toggleIngredientSelection" />
-        </template>
-      </ul>
+  <div class="p-8 flex h-screen">
+    <div class="min-h-full flex flex-col items-center text-gray-100 w-full max-w-6xl m-auto">
+      <p class="text-center text-xs">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
+      <div class="w-full">
+        <h2 class="text-center text-4xl mb-8 mt-12">Deine Pizza</h2>
+        <div class="flex flex-row flex-no-wrap overflow-hidden -mx-3">
+          <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
+        </div>
+      </div>
+      <div class="w-full">
+        <h2 class="text-center text-4xl mb-8 mt-12">Deine Zutaten</h2>
+<!--                {{ selectedIngredients }}-->
+        <div class="flex flex-row flex-no-wrap overflow-hidden -m-3">
+          <ingredient :data="ingredient" @toggle="toggleIngredientSelection" v-for="ingredient in ingredients" :key="ingredient.id" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
