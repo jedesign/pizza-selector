@@ -4,15 +4,19 @@
       <p class="text-center text-xs">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
       <div class="w-full">
         <h2 class="text-center text-4xl mb-8 mt-12">Deine Pizza</h2>
-        <div class="flex flex-row flex-no-wrap overflow-hidden -mx-3">
+        <!--        <div class="flex flex-row flex-no-wrap overflow-hidden -mx-3">-->
+        <div class="flex flex-row flex-wrap -m-3">
           <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
         </div>
       </div>
       <div class="w-full">
         <h2 class="text-center text-4xl mb-8 mt-12">Deine Zutaten</h2>
-<!--                {{ selectedIngredients }}-->
-        <div class="flex flex-row flex-no-wrap overflow-hidden -m-3">
-          <ingredient :data="ingredient" @toggle="toggleIngredientSelection" v-for="ingredient in ingredients" :key="ingredient.id" />
+        <div class="flex flex-row flex-wrap -m-3">
+          <ingredient :data="ingredient"
+              @ingredientToggled="updateActiveIngredients"
+              v-for="ingredient in ingredients"
+              :key="ingredient.id"
+              ref="ingredients" />
         </div>
       </div>
     </div>
@@ -65,13 +69,18 @@ export default {
     this.loadingredients();
   },
   methods: {
-    toggleIngredientSelection(ingredient) {
-      const i = this.selectedIngredients.indexOf(ingredient);
-      if (i === -1) {
-        this.selectedIngredients.push(ingredient);
-      } else {
-        this.selectedIngredients.splice(i, 1);
+    updateActiveIngredients() {
+      if (!this.$refs.ingredients) {
+        this.selectedIngredients = [];
       }
+      let ingredients = [];
+      this.$refs.ingredients.forEach(ingredient => {
+        if (!ingredient.active) {
+          return;
+        }
+        ingredients.push(ingredient.data.id);
+      });
+      this.selectedIngredients = ingredients;
     },
     loadPizzas() {
       Axios.get(
