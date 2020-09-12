@@ -1,2 +1,2 @@
-index.html
-dist
+!index.html
+!build/
