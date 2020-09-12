@@ -31,7 +31,7 @@ jobs:
       - name: Deploy
         uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
-          ftp-server: ftp://goehte.metanet.ch/
+          ftp-server: ftp://goethe.metanet.ch/
           ftp-username: github-pizza-selector
           ftp-password: ${{ secrets.FTP_PASSWORD }}
 
