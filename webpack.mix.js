@@ -6,7 +6,9 @@ mix
 		require('tailwindcss'),
 	])
 	.browserSync({
-		proxy: 'https://pizza-selector.test',
+		proxy: false,
+		server: true,
+		https: true,
 		notify: false,
 		open: false,
 		files: [
