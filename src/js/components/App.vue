@@ -2,13 +2,12 @@
   <div class="min-h-screen p-8 flex">
     <div class="h-full flex flex-col items-center text-gray-100 w-full">
       <p class="text-center text-xs">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
-      <div class="w-full">
+      <div class="w-full" v-show="selectedIngredients.length > 0">
         <h2 class="text-center text-4xl mb-8 mt-12">
           Deine
           <span v-if="filteredPizzas.length=== 1">Pizza</span>
           <span v-else>Pizzen</span>
         </h2>
-        <!--        <div class="flex flex-row flex-no-wrap overflow-hidden -mx-3">-->
         <div class="grid grid-flow-col gap-3 overflow-x-scroll">
           <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
         </div>
