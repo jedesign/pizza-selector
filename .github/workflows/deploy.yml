@@ -22,8 +22,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Build
-      - run: npm ci
-      - run: npm run production --if-present
+        run:|
+          npm ci
+          npm run production --if-present
 
       - name: List output files
         run: ls
