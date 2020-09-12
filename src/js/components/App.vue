@@ -5,7 +5,7 @@
       <div class="w-full">
         <h2 class="text-center text-4xl mb-8 mt-12">Deine Pizza</h2>
         <!--        <div class="flex flex-row flex-no-wrap overflow-hidden -mx-3">-->
-        <div class="flex flex-row flex-wrap -m-3">
+        <div class="grid grid-flow-col gap-3 overflow-x-scroll">
           <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
         </div>
       </div>
