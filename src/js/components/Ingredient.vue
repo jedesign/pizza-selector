@@ -1,12 +1,12 @@
 <template>
   <div class="p-3">
     <div
-        @click="updateActive"
+        @click="updateSelected"
         :style="`background-image: url(${unsplashUrl})`"
-        class="bg-cover h-40 flex justify-center items-end p-1 relative select-none"
+        class="bg-cover h-40 flex justify-center items-end p-1 relative select-none cursor-pointer"
     >
       <div
-          v-show="active"
+          v-show="selected"
           class="absolute top-0 left-0 w-full h-full bg-pink-500 bg-opacity-75 z-0 flex items-center justify-center"
       >
         <svg width="42" height="32" viewBox="0 0 42 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,7 +26,7 @@ export default {
   ],
   data() {
     return {
-      active: false,
+      selected: false,
     };
   },
   computed: {
@@ -35,8 +35,8 @@ export default {
     },
   },
   methods: {
-    updateActive() {
-      this.active = !this.active;
+    updateSelected() {
+      this.selected = !this.selected;
       this.$emit('ingredientToggled');
     },
   },

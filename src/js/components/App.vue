@@ -3,7 +3,11 @@
     <div class="h-full flex flex-col items-center text-gray-100 w-full m-auto">
       <p class="text-center text-xs">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
       <div class="w-full">
-        <h2 class="text-center text-4xl mb-8 mt-12">Deine Pizza</h2>
+        <h2 class="text-center text-4xl mb-8 mt-12">
+          Deine
+          <span v-if="filteredPizzas.length=== 1">Pizza</span>
+          <span v-else>Pizzen</span>
+        </h2>
         <!--        <div class="flex flex-row flex-no-wrap overflow-hidden -mx-3">-->
         <div class="grid grid-flow-col gap-3 overflow-x-scroll">
           <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
@@ -14,9 +18,10 @@
         <!-- <div class="flex flex-row flex-wrap -m-3"> -->
         <div class="grid xxl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
           <ingredient :data="ingredient"
-              @ingredientToggled="updateActiveIngredients"
+              @ingredientToggled="updateSelectedIngredient"
               v-for="ingredient in ingredients"
               :key="ingredient.id"
+              v-show="!ingredient.disabled"
               ref="ingredients" />
         </div>
       </div>
@@ -43,6 +48,7 @@ export default {
     filteredPizzas() {
       let pizzas = [];
       if (this.selectedIngredients.length < 1) {
+        this.sortOutIngredients(this.pizzas);
         return this.pizzas;
       }
       this.pizzas.forEach(pizza => {
@@ -58,6 +64,9 @@ export default {
         }
         pizzas.push(pizza);
       });
+
+      this.sortOutIngredients(pizzas);
+
       return pizzas;
     },
   },
@@ -70,18 +79,37 @@ export default {
     this.loadingredients();
   },
   methods: {
-    updateActiveIngredients() {
+    updateSelectedIngredient() {
       if (!this.$refs.ingredients) {
         this.selectedIngredients = [];
       }
       let ingredients = [];
       this.$refs.ingredients.forEach(ingredient => {
-        if (!ingredient.active) {
+        if (!ingredient.selected) {
           return;
         }
         ingredients.push(ingredient.data.id);
       });
       this.selectedIngredients = ingredients;
+    },
+    sortOutIngredients(filteredPizzas) {
+      if (!this.$refs.ingredients) {
+        return;
+      }
+      this.$refs.ingredients.forEach(ingredient => {
+        let id = ingredient.data.id;
+        ingredient.data.disabled = true;
+
+        filteredPizzas.forEach(pizza => {
+          if (!ingredient.data.disabled) {
+            return;
+          }
+
+          if (pizza.ingredients && pizza.ingredients.includes(id)) {
+            ingredient.data.disabled = false;
+          }
+        });
+      });
     },
     loadPizzas() {
       Axios.get(
@@ -106,6 +134,7 @@ export default {
             this.ingredients = response.data.records.map((item) => {
               return {
                 id: item.id,
+                disabled: false,
                 ...item.fields,
               };
             });
