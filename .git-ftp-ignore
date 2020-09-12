@@ -1,0 +1,10 @@
+.github
+.vscode
+node_modules
+src
+.gitignore
+mix-manifest.json
+package.json
+static.html
+tailwind.config.js
+webpack.mix.js
