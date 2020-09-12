@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div class="p-1">
     <div
         @click="updateSelected"
         :style="`background-image: url(${unsplashUrl})`"
@@ -13,7 +13,7 @@
           <path d="M14 24.73L4.27 15L0.956665 18.29L14 31.3333L42 3.33333L38.71 0.0433331L14 24.73Z" fill="currentColor" />
         </svg>
       </div>
-      <span class="relative z-10">{{ data.name }}</span>
+      <span class="relative z-10 font-extrabold">{{ data.name }}</span>
     </div>
   </div>
 </template>
