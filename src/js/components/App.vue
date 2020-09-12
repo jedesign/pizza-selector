@@ -15,7 +15,12 @@
       <div class="w-full">
         <div class="flex justify-start items-center">
           <h2 class="text-4xl mb-2 mt-2 p-1 mr-10">Deine Zutaten</h2>
-          <div class="bg-gray-800 font-semibold rounded-lg hover:bg-pink-500 button flex justify-center items-center">Mach Weg</div>
+          <div
+              class="bg-gray-800 font-semibold rounded-lg hover:bg-pink-500 button flex justify-center items-center cursor-pointer"
+              v-show="selectedIngredients.length > 0"
+              @click="resetIngredients"
+          >Mach Weg
+          </div>
         </div>
         <div class="grid grid-cols-2 xxl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
           <ingredient :data="ingredient"
@@ -111,6 +116,17 @@ export default {
           }
         });
       });
+    },
+    resetIngredients() {
+      this.selectedIngredients = [];
+      if (!this.$refs.ingredients) {
+        return;
+      }
+      this.$refs.ingredients.forEach(
+          ingredient => {
+            ingredient.data.disabled = false;
+            ingredient.selected = false;
+          });
     },
     loadPizzas() {
       Axios.get(
