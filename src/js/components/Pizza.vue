@@ -1,5 +1,6 @@
 <template>
-  <div class="h-40 bg-gray-800 flex items-center justify-center text-center font-extrabold text-xl"> <br>{{ pizza.name }}</div>
+  <div class="bg-blue-900 h-40 flex items-center justify-center text-center font-extrabold text-xl" >{{ pizza.name }}
+  </div>
 </template>
 
 <script>
@@ -10,3 +11,5 @@ export default {
   ],
 };
 </script>
+
+
