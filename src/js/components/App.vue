@@ -13,11 +13,11 @@
         </div>
       </div>
       <div class="w-full">
-        <div class="grid xxl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-          <h2 class="text-4xl mb-2 mt-2 p-1">Deine Zutaten</h2>
-          <div class="bg-gray-800 font-semibold rounded-lg hover:bg-pink-500 m-auto button flex justify-center items-center">Mach Weg</div>
+        <div class="flex justify-start items-center">
+          <h2 class="text-4xl mb-2 mt-2 p-1 mr-10">Deine Zutaten</h2>
+          <div class="bg-gray-800 font-semibold rounded-lg hover:bg-pink-500 button flex justify-center items-center">Mach Weg</div>
         </div>
-        <div class="grid xxl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
+        <div class="grid grid-cols-2 xxl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
           <ingredient :data="ingredient"
               @ingredientToggled="updateSelectedIngredient"
               v-for="ingredient in ingredients"
