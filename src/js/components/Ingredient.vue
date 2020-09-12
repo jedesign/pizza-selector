@@ -1,9 +1,9 @@
 <template>
-  <div class="w-1/4 flex-none p-3">
+  <div class="p-3">
     <div
         @click="updateActive"
         :style="`background-image: url(${unsplashUrl})`"
-        class="bg-cover h-40 flex justify-center items-end p-3 relative select-none"
+        class="bg-cover h-40 flex justify-center items-end p-1 relative select-none"
     >
       <div
           v-show="active"
