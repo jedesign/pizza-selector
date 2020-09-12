@@ -11,3 +11,4 @@ package-lock.json
 static.html
 tailwind.config.js
 webpack.mix.js
+README.md
