@@ -2,16 +2,7 @@
   <div class="min-h-screen p-8 flex">
     <div class="h-full flex flex-col text-gray-100 w-full">
       <p class="p-1 text-xs">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
-      <div class="w-full" v-show="selectedIngredients.length > 0">
-        <h2 class="p-1 text-4xl mb-4 mt-8">
-          Deine
-          <span v-if="filteredPizzas.length=== 1">Pizza</span>
-          <span v-else>Pizzen</span>
-        </h2>
-        <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-flow-row gap-2">
-          <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
-        </div>
-      </div>
+
       <div class="w-full">
         <div class="flex justify-start items-center">
           <h2 class="text-4xl mb-2 mt-2 p-1 mr-10">Deine Zutaten</h2>
@@ -29,6 +20,17 @@
               :key="ingredient.id"
               v-show="!ingredient.disabled"
               ref="ingredients" />
+        </div>
+      </div>
+      
+      <div class="w-full" v-show="selectedIngredients.length > 0">
+        <h2 class="p-1 text-4xl mb-4 mt-8">
+          Deine
+          <span v-if="filteredPizzas.length=== 1">Pizza</span>
+          <span v-else>Pizzen</span>
+        </h2>
+        <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-flow-row gap-2">
+          <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
         </div>
       </div>
     </div>
