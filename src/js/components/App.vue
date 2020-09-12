@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen p-8 flex">
-    <div class="h-full flex flex-col items-center text-gray-100 w-full m-auto">
+    <div class="h-full flex flex-col items-center text-gray-100 w-full">
       <p class="text-center text-xs">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
       <div class="w-full">
         <h2 class="text-center text-4xl mb-8 mt-12">
@@ -14,8 +14,7 @@
         </div>
       </div>
       <div class="w-full">
-        <h2 class="text-center text-4xl mb-8 mt-12">Deine Zutaten</h2>
-        <!-- <div class="flex flex-row flex-wrap -m-3"> -->
+        <h2 class="text-4xl mb-8 mt-12 p-3">Deine Zutaten</h2>
         <div class="grid xxl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
           <ingredient :data="ingredient"
               @ingredientToggled="updateSelectedIngredient"
