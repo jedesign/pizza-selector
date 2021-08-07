@@ -5,7 +5,7 @@
 
       <div class="w-full">
         <div class="flex justify-start items-center">
-          <h2 class="text-4xl mb-2 mt-2 p-1 mr-10">{{ingredientsTitle}}</h2>
+          <h2 class="text-4xl mb-2 mt-2 p-1 mr-10">{{ ingredientsTitle }}</h2>
           <div
               class="bg-gray-800 font-semibold rounded-lg hover:bg-pink-500 button flex justify-center items-center cursor-pointer"
               v-show="selectedIngredients.length > 0"
@@ -22,7 +22,7 @@
               ref="ingredients" />
         </div>
       </div>
-      
+
       <div class="w-full" v-show="selectedIngredients.length > 0">
         <h2 class="p-1 text-4xl mb-4 mt-8">
           Deine
@@ -55,12 +55,12 @@ export default {
   computed: {
     ingredientsTitle() {
       const titles = [
-          'Deine Zutaten',
-          'I wött:',
-          'Gib:',
-          'Habe Bock auf:',
-          'Uf wa häsch Lust?',
-          'Da sind dini Optione:'
+        'Deine Zutaten',
+        'I wött:',
+        'Gib:',
+        'Habe Bock auf:',
+        'Uf wa häsch Lust?',
+        'Da sind dini Optione:',
       ];
       return titles[Math.floor(Math.random() * titles.length)];
     },
