@@ -158,7 +158,7 @@ export default {
     },
     loadingredients() {
       Axios.get(
-          `https://api.airtable.com/v0/${Config.airTableApp}/ingredient?sort[0][field]=pizzas_count&sort[0][direction]=desc&sort[1][field]=name&sort[1][direction]=asc`,
+          `https://api.airtable.com/v0/${Config.airTableApp}/ingredient?sort[0][field]=prioritise&sort[0][direction]=desc&sort[1][field]=pizzas_count&sort[1][direction]=desc&sort[2][field]=name&sort[2][direction]=asc`,
           {headers: {Authorization: 'Bearer ' + Config.apiToken}})
           .then((response) => {
             this.ingredients = response.data.records.map((item) => {
