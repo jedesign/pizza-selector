@@ -13,7 +13,7 @@
           >Mach Weg
           </div>
         </div>
-        <div class="grid grid-cols-2 xxl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
+        <div class="grid grid-cols-2 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
           <ingredient :data="ingredient"
               @ingredientToggled="updateSelectedIngredient"
               v-for="ingredient in ingredients"
@@ -29,7 +29,7 @@
           <span v-if="filteredPizzas.length=== 1">Pizza</span>
           <span v-else>Pizzen</span>
         </h2>
-        <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-flow-row gap-2">
+        <div class="grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-flow-row gap-2">
           <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
         </div>
       </div>

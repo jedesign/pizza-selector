@@ -1,20 +1,46 @@
 module.exports = {
-	future: {
-		removeDeprecatedGapUtilities: true,
-	},
+	mode: process.env.NODE_ENV ? 'jit' : undefined,
 	purge: [
-		'./*.html',
+		'index.html',
 		'./src/**/*.vue',
 	],
 	theme: {
-		screens: {
-			'sm': '640px',
-			'md': '768px',
-			'lg': '1024px',
-			'xl': '1280px',
-			'xxl': '1680px',
-		}
+		extend: {},
 	},
 	variants: {},
-	plugins: [],
+	plugins: [
+		function ({addBase, theme}) {
+			if (process.env.NODE_ENV === 'production') {
+				return;
+			}
+
+			const screens = theme('screens', {});
+			const breakpoints = Object.keys(screens);
+
+			addBase({
+				'body::after': {
+					content: `"xs"`,
+					position: 'fixed',
+					right: '.5rem',
+					bottom: '.5rem',
+					padding: '.5rem',
+					background: '#eeeeee',
+					border: '1px solid',
+					borderColor: '#dddddd',
+					color: '#e50478',
+					fontSize: '1rem',
+					fontWeight: '600',
+					zIndex: '99999',
+				},
+				...breakpoints.reduce((acc, current) => {
+					acc[`@media (min-width: ${screens[current]})`] = {
+						'body::after': {
+							content: `"${current}"`,
+						},
+					};
+					return acc;
+				}, {}),
+			});
+		}
+	],
 };
