@@ -1,16 +1,28 @@
 <template>
-  <div class="min-h-screen p-8 flex">
+  <div class="min-h-screen p-4 flex sm:p-8">
     <div class="h-full flex flex-col text-gray-100 w-full">
       <p class="p-1 text-xs">Eine Zutatenbasierte Pizza-Auswahlhilfe für Nerds.</p>
 
       <div class="w-full">
-        <div class="flex justify-start items-center">
-          <h2 class="text-4xl mb-2 mt-2 p-1 mr-10">{{ ingredientsTitle }}</h2>
-          <div
-              class="bg-gray-800 font-semibold rounded-lg hover:bg-pink-500 button flex justify-center items-center cursor-pointer"
-              v-show="selectedIngredients.length > 0"
-              @click="resetIngredients"
-          >Mach Weg
+        <div class="flex flex-wrap justify-start items-center mb-4">
+          <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">{{ ingredientsTitle }}</h2>
+          <div class="flex">
+            <div
+                class="bg-gray-800 font-semibold rounded-lg md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4"
+                :class="[{'bg-pink-500': explicitIngredientsFilter},{'pointer-events-none opacity-20 bg-transparent':!enableExplicitIngredientsFilterButton}]"
+                v-show="showExplicitIngredientsFilterButton"
+                @click="toggleExplicitIngredientsFilter"
+            ><span>Nur diese&nbsp;</span><span v-if="selectedIngredients.length=== 1">Zutat</span><span v-else>Zutaten</span>
+              <svg width="42" height="32" viewBox="0 0 42 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1em] w-[1em] ml-2" v-if="explicitIngredientsFilter">
+                <path d="M14 24.73L4.27 15L0.956665 18.29L14 31.3333L42 3.33333L38.71 0.0433331L14 24.73Z" fill="currentColor" />
+              </svg>
+            </div>
+            <div
+                class="bg-gray-800 font-semibold rounded-lg md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer"
+                v-show="selectedIngredients.length > 0"
+                @click="resetIngredients"
+            >Mach Weg
+            </div>
           </div>
         </div>
         <div class="grid grid-cols-2 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
@@ -50,6 +62,7 @@ export default {
       pizzas: [],
       ingredients: [],
       selectedIngredients: [],
+      explicitIngredientsFilter: false,
     };
   },
   computed: {
@@ -70,8 +83,39 @@ export default {
         this.sortOutIngredients(this.pizzas);
         return this.pizzas;
       }
+      if (this.explicitIngredientsFilter) {
+        pizzas = this.explicitFilteredPizzas;
+      } else {
+        this.pizzas.forEach(pizza => {
+          let includesAllIngredients = true;
+
+          this.selectedIngredients.forEach(ingredient => {
+            if (pizza.ingredients && pizza.ingredients.includes(ingredient)) {
+              return;
+            }
+            includesAllIngredients = false;
+          });
+          if (!includesAllIngredients) {
+            return;
+          }
+          pizzas.push(pizza);
+        });
+      }
+
+      this.sortOutIngredients(pizzas);
+
+      return pizzas;
+    },
+    explicitFilteredPizzas() {
+      let pizzas = [];
+      if (this.selectedIngredients.length < 1) {
+        return this.pizzas;
+      }
       this.pizzas.forEach(pizza => {
         let includesAllIngredients = true;
+        if (this.selectedIngredients.length !== pizza.ingredients.length) {
+          return;
+        }
         this.selectedIngredients.forEach(ingredient => {
           if (pizza.ingredients && pizza.ingredients.includes(ingredient)) {
             return;
@@ -83,10 +127,13 @@ export default {
         }
         pizzas.push(pizza);
       });
-
-      this.sortOutIngredients(pizzas);
-
       return pizzas;
+    },
+    showExplicitIngredientsFilterButton() {
+      return this.selectedIngredients.length >= 1;
+    },
+    enableExplicitIngredientsFilterButton() {
+      return this.explicitFilteredPizzas.length >= 1;
     },
   },
   components: {
@@ -109,6 +156,11 @@ export default {
         }
         ingredients.push(ingredient.data.id);
       });
+
+      if (ingredients.length === 0) {
+        this.explicitIngredientsFilter = false;
+      }
+
       this.selectedIngredients = ingredients;
     },
     sortOutIngredients(filteredPizzas) {
@@ -131,6 +183,7 @@ export default {
       });
     },
     resetIngredients() {
+      this.explicitIngredientsFilter = false;
       this.selectedIngredients = [];
       if (!this.$refs.ingredients) {
         return;
@@ -171,6 +224,9 @@ export default {
           }).catch((error) => {
         console.log(error);
       });
+    },
+    toggleExplicitIngredientsFilter() {
+      this.explicitIngredientsFilter = !this.explicitIngredientsFilter;
     },
   },
 };
