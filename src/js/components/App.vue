@@ -8,7 +8,7 @@
           <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">{{ ingredientsTitle }}</h2>
           <div class="flex">
             <div
-                class="bg-gray-800 font-semibold rounded-lg md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4"
+                class="bg-gray-800 font-semibold rounded-lg md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none"
                 :class="[{'bg-pink-500': explicitIngredientsFilter},{'pointer-events-none opacity-20 bg-transparent':!enableExplicitIngredientsFilterButton}]"
                 v-show="showExplicitIngredientsFilterButton"
                 @click="toggleExplicitIngredientsFilter"
