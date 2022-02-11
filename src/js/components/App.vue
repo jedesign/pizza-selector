@@ -12,9 +12,17 @@
                 :class="[{'bg-pink-500': explicitIngredientsFilter},{'pointer-events-none opacity-20 bg-transparent':!enableExplicitIngredientsFilterButton}]"
                 v-show="showExplicitIngredientsFilterButton"
                 @click="toggleExplicitIngredientsFilter"
-            ><span>Nur diese&nbsp;</span><span v-if="selectedIngredients.length=== 1">Zutat</span><span v-else>Zutaten</span>
-              <svg width="42" height="32" viewBox="0 0 42 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1em] w-[1em] ml-2" v-if="explicitIngredientsFilter">
-                <path d="M14 24.73L4.27 15L0.956665 18.29L14 31.3333L42 3.33333L38.71 0.0433331L14 24.73Z" fill="currentColor" />
+            >
+              <span>Nur diese&nbsp;</span><span v-if="selectedIngredients.length=== 1">Zutat</span><span v-else>Zutaten</span>
+              <svg width="42"
+                   height="32"
+                   viewBox="0 0 42 32"
+                   fill="none"
+                   xmlns="http://www.w3.org/2000/svg"
+                   class="h-[1em] w-[1em] ml-2"
+                   v-if="explicitIngredientsFilter">
+                <path d="M14 24.73L4.27 15L0.956665 18.29L14 31.3333L42 3.33333L38.71 0.0433331L14 24.73Z"
+                      fill="currentColor"/>
               </svg>
             </div>
             <div
@@ -27,11 +35,11 @@
         </div>
         <div class="grid grid-cols-2 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
           <ingredient :data="ingredient"
-              @ingredientToggled="updateSelectedIngredient"
-              v-for="ingredient in ingredients"
-              :key="ingredient.id"
-              v-show="!ingredient.disabled"
-              ref="ingredients" />
+                      @ingredientToggled="updateSelectedIngredient"
+                      v-for="ingredient in ingredients"
+                      :key="ingredient.id"
+                      v-show="!ingredient.disabled"
+                      ref="ingredients"/>
         </div>
       </div>
 
@@ -42,7 +50,7 @@
           <span v-else>Pizzen</span>
         </h2>
         <div class="grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-flow-row gap-2">
-          <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id" />
+          <pizza v-for="pizza in filteredPizzas" :pizza="pizza" :key="pizza.id"/>
         </div>
       </div>
     </div>
@@ -142,7 +150,7 @@ export default {
   },
   mounted() {
     this.loadPizzas();
-    this.loadingredients();
+    this.loadIngredients();
   },
   methods: {
     updateSelectedIngredient() {
@@ -194,33 +202,55 @@ export default {
             ingredient.selected = false;
           });
     },
-    loadPizzas() {
+    loadPizzas(offset = null) {
+      let url = `https://api.airtable.com/v0/${Config.airTableApp}/pizza?sort[0][field]=name&sort[0][direction]=asc`;
+      if (offset) {
+        url += `&offset=${offset}`
+      }
       Axios.get(
-          `https://api.airtable.com/v0/${Config.airTableApp}/pizza?sort[0][field]=name&sort[0][direction]=asc`,
+          url,
           {headers: {Authorization: 'Bearer ' + Config.apiToken}})
           .then((response) => {
-            this.pizzas = response.data.records.map((item) => {
+            let pizzas = response.data.records.map((item) => {
               return {
                 id: item.id,
                 ...item.fields,
               };
             });
+
+            this.pizzas = this.pizzas.concat(pizzas);
+
+            if (response.data.offset) {
+              this.loadPizzas(response.data.offset);
+            }
           }).catch((error) => {
         console.log(error);
       });
     },
-    loadingredients() {
+    loadIngredients(offset = null) {
+      let url = `https://api.airtable.com/v0/${Config.airTableApp}/ingredient?sort[0][field]=prioritise&sort[0][direction]=desc&sort[1][field]=pizzas_count&sort[1][direction]=desc&sort[2][field]=name&sort[2][direction]=asc`;
+
+      if (offset) {
+        url += `&offset=${offset}`
+      }
+
       Axios.get(
-          `https://api.airtable.com/v0/${Config.airTableApp}/ingredient?sort[0][field]=prioritise&sort[0][direction]=desc&sort[1][field]=pizzas_count&sort[1][direction]=desc&sort[2][field]=name&sort[2][direction]=asc`,
+          url,
           {headers: {Authorization: 'Bearer ' + Config.apiToken}})
           .then((response) => {
-            this.ingredients = response.data.records.map((item) => {
+            let ingredients = response.data.records.map((item) => {
               return {
                 id: item.id,
                 disabled: false,
                 ...item.fields,
               };
             });
+
+            this.ingredients = this.ingredients.concat(ingredients);
+
+            if (response.data.offset) {
+              this.loadIngredients(response.data.offset);
+            }
           }).catch((error) => {
         console.log(error);
       });
