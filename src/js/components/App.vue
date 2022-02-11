@@ -9,7 +9,7 @@
           <div class="-m-2 flex flex-row flex-wrap">
             <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer m-2 select-none"
                  v-for="restaurant in restaurants"
-                 v-if="restaurant.pizza.length > 1"
+                 v-if="!restaurant.hide"
                  :class="[{'bg-pink-500': restaurant.active}]"
                  @click="restaurant.active = !restaurant.active"
             >
@@ -101,7 +101,7 @@ export default {
   computed: {
     ingredientsTitle() {
       const titles = [
-        'Deine Zutaten',
+        'Dini Zutaten',
         'I wött:',
         'Gib:',
         'Habe Bock auf:',
