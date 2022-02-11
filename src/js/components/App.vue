@@ -111,15 +111,28 @@ export default {
     },
     filteredPizzas() {
       let pizzas = [];
+      let activeRestaurants = [];
+
+      this.restaurants.forEach(restaurant => {
+        if (restaurant.active) {
+          activeRestaurants.push(restaurant.id);
+        }
+      });
+
       if (this.selectedIngredients.length < 1) {
         this.sortOutIngredients(this.pizzas);
         return this.pizzas;
       }
+
       if (this.explicitIngredientsFilter) {
         pizzas = this.explicitFilteredPizzas;
       } else {
         this.pizzas.forEach(pizza => {
           let includesAllIngredients = true;
+
+          if (!activeRestaurants.includes(pizza.restaurant[0])) {
+            return;
+          }
 
           this.selectedIngredients.forEach(ingredient => {
             if (pizza.ingredients && pizza.ingredients.includes(ingredient)) {
@@ -200,9 +213,26 @@ export default {
       if (!this.$refs.ingredients) {
         return;
       }
+
+      let availableIngredientsByRestaurants = [];
+      this.restaurants.forEach(restaurant => {
+        if (!restaurant.active) {
+          return;
+        }
+        restaurant.ingredients.forEach(ingredient => {
+          availableIngredientsByRestaurants.push(ingredient);
+        })
+      });
+
+      availableIngredientsByRestaurants = [...new Set(availableIngredientsByRestaurants)];
+
       this.$refs.ingredients.forEach(ingredient => {
         let id = ingredient.data.id;
         ingredient.data.disabled = true;
+
+        if (!availableIngredientsByRestaurants.includes(id)) {
+          return;
+        }
 
         filteredPizzas.forEach(pizza => {
           if (!ingredient.data.disabled) {
@@ -240,7 +270,8 @@ export default {
               return {
                 id: item.id,
                 ...item.fields,
-                active: true
+                active: true,
+                ingredients: [...new Set(item.fields.ingredients)]
               };
             });
 
