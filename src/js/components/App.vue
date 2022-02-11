@@ -5,10 +5,16 @@
 
       <div class="w-full">
         <div class="flex flex-wrap justify-start items-center mb-4">
+          <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">Dini Pizza Bakers</h2>
+            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">Del Centro</div>
+            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">La Silla</div>
+            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">Piccola</div>
+            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">Subito</div>
+
           <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">{{ ingredientsTitle }}</h2>
           <div class="flex">
             <div
-                class="bg-gray-800 font-semibold rounded-lg md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none"
+                class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none"
                 :class="[{'bg-pink-500': explicitIngredientsFilter},{'pointer-events-none opacity-20 bg-transparent':!enableExplicitIngredientsFilterButton}]"
                 v-show="showExplicitIngredientsFilterButton"
                 @click="toggleExplicitIngredientsFilter"
@@ -18,7 +24,7 @@
               </svg>
             </div>
             <div
-                class="bg-gray-800 font-semibold rounded-lg md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer"
+                class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer"
                 v-show="selectedIngredients.length > 0"
                 @click="resetIngredients"
             >Mach Weg
