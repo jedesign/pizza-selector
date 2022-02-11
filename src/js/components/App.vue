@@ -6,11 +6,28 @@
       <div class="w-full">
         <div class="flex flex-wrap justify-start items-center mb-4">
           <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">Dini Pizza Bakers</h2>
-            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">Del Centro</div>
-            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">La Silla</div>
-            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">Piccola</div>
-            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none">Subito</div>
-
+          <div class="-m-2 flex flex-col md:flex-row md:flex-wrap">
+            <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer m-2 select-none"
+                 v-for="restaurant in restaurants"
+                 v-if="restaurant.pizza.length > 1"
+                 :class="[{'bg-pink-500': restaurant.active}]"
+                 @click="restaurant.active = !restaurant.active"
+            >
+              <span>{{ restaurant.name }}</span>
+              <svg width="42"
+                   height="32"
+                   viewBox="0 0 42 32"
+                   fill="none"
+                   xmlns="http://www.w3.org/2000/svg"
+                   class="h-[1em] w-[1em] ml-2"
+                   v-if="restaurant.active">
+                <path d="M14 24.73L4.27 15L0.956665 18.29L14 31.3333L42 3.33333L38.71 0.0433331L14 24.73Z"
+                      fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap justify-start items-center mb-4">
           <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">{{ ingredientsTitle }}</h2>
           <div class="flex">
             <div
@@ -75,6 +92,7 @@ export default {
     return {
       pizzas: [],
       ingredients: [],
+      restaurants: [],
       selectedIngredients: [],
       explicitIngredientsFilter: false,
     };
@@ -155,6 +173,7 @@ export default {
     Ingredient,
   },
   mounted() {
+    this.loadRestaurants();
     this.loadPizzas();
     this.loadIngredients();
   },
@@ -207,6 +226,32 @@ export default {
             ingredient.data.disabled = false;
             ingredient.selected = false;
           });
+    },
+    loadRestaurants(offset = null) {
+      let url = `https://api.airtable.com/v0/${Config.airTableApp}/restaurant?sort[0][field]=name&sort[0][direction]=asc`;
+      if (offset) {
+        url += `&offset=${offset}`
+      }
+      Axios.get(
+          url,
+          {headers: {Authorization: 'Bearer ' + Config.apiToken}})
+          .then((response) => {
+            let restaurants = response.data.records.map((item) => {
+              return {
+                id: item.id,
+                ...item.fields,
+                active: true
+              };
+            });
+
+            this.restaurants = this.restaurants.concat(restaurants);
+
+            if (response.data.offset) {
+              this.loadRestaurants(response.data.offset);
+            }
+          }).catch((error) => {
+        console.log(error);
+      });
     },
     loadPizzas(offset = null) {
       let url = `https://api.airtable.com/v0/${Config.airTableApp}/pizza?sort[0][field]=name&sort[0][direction]=asc`;
