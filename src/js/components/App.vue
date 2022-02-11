@@ -5,7 +5,7 @@
 
       <div class="w-full">
         <div class="flex flex-wrap justify-start items-center mb-4">
-          <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">{{ pizzeriaTitle }}</h2>
+          <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">{{ restaurantTitle }}</h2>
           <div class="-m-2 flex flex-row flex-wrap">
             <div class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer m-2 select-none"
                  v-for="restaurant in restaurants"
@@ -110,12 +110,14 @@ export default {
       ];
       return titles[Math.floor(Math.random() * titles.length)];
     },
-    pizzeriaTitle() {
+    restaurantTitle() {
       const pizzeria = [
         'Dini Pizza Bakers',
         'Erhabeni Pizza Gilde',
         'Wele Teigschleuderer?',
         'Ofenmeister und Teigkünstler',
+        'Em Mario sini Brüedere',
+        'Mamma Mia! 🤌',
       ];
       return pizzeria[Math.floor(Math.random() * pizzeria.length)];
     },
