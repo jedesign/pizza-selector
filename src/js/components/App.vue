@@ -93,6 +93,7 @@ export default {
       pizzas: [],
       ingredients: [],
       restaurants: [],
+      activeRestaurants: [],
       selectedIngredients: [],
       explicitIngredientsFilter: false,
     };
@@ -120,13 +121,8 @@ export default {
     },
     filteredPizzas() {
       let pizzas = [];
-      let activeRestaurants = [];
 
-      this.restaurants.forEach(restaurant => {
-        if (restaurant.active) {
-          activeRestaurants.push(restaurant.id);
-        }
-      });
+      this.setActiveRestaurants();
 
       if (this.selectedIngredients.length < 1) {
         this.sortOutIngredients(this.pizzas);
@@ -139,7 +135,7 @@ export default {
         this.pizzas.forEach(pizza => {
           let includesAllIngredients = true;
 
-          if (!activeRestaurants.includes(pizza.restaurant[0])) {
+          if (!this.activeRestaurants.includes(pizza.restaurant[0])) {
             return;
           }
 
@@ -156,6 +152,11 @@ export default {
         });
       }
 
+      if (!pizzas.length) {
+        this.resetIngredients();
+        pizzas = this.pizzas;
+      }
+
       this.sortOutIngredients(pizzas);
 
       return pizzas;
@@ -167,18 +168,26 @@ export default {
       }
       this.pizzas.forEach(pizza => {
         let includesAllIngredients = true;
+
+        if (!this.activeRestaurants.includes(pizza.restaurant[0])) {
+          return;
+        }
+
         if (this.selectedIngredients.length !== pizza.ingredients.length) {
           return;
         }
+
         this.selectedIngredients.forEach(ingredient => {
           if (pizza.ingredients && pizza.ingredients.includes(ingredient)) {
             return;
           }
           includesAllIngredients = false;
         });
+
         if (!includesAllIngredients) {
           return;
         }
+
         pizzas.push(pizza);
       });
       return pizzas;
@@ -188,7 +197,7 @@ export default {
     },
     enableExplicitIngredientsFilterButton() {
       return this.explicitFilteredPizzas.length >= 1;
-    },
+    }
   },
   components: {
     Pizza,
@@ -265,6 +274,15 @@ export default {
             ingredient.data.disabled = false;
             ingredient.selected = false;
           });
+    },
+    setActiveRestaurants() {
+      this.activeRestaurants = [];
+
+      this.restaurants.forEach(restaurant => {
+        if (restaurant.active) {
+          this.activeRestaurants.push(restaurant.id);
+        }
+      });
     },
     loadRestaurants(offset = null) {
       let url = `https://api.airtable.com/v0/${Config.airTableApp}/restaurant?sort[0][field]=name&sort[0][direction]=asc`;
