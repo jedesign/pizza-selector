@@ -19,7 +19,7 @@
                 fill="currentColor"/>
         </svg>
       </div>
-      <span class="relative z-10 font-extrabold text-shadow">{{ data.name }}</span>
+      <span class="relative z-10 font-extrabold text-shadow text-center">{{ data.name }}</span>
     </div>
   </div>
 </template>
