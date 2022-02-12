@@ -1,8 +1,8 @@
 <template>
-  <div class="p-1">
+  <div>
     <div
         @click="updateSelected"
-        class="bg-cover h-40 flex justify-center items-end p-1 relative select-none cursor-pointer"
+        class="bg-cover h-40 flex justify-center items-end relative select-none cursor-pointer"
     >
       <img :src="unsplashUrl"
            alt=""

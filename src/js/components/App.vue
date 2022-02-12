@@ -29,9 +29,27 @@
         </div>
         <div class="flex flex-wrap justify-start items-center mb-4">
           <h2 class="text-4xl my-2 p-1 mr-10 w-full md:w-auto">{{ ingredientsTitle }}</h2>
-          <div class="flex">
+          <div class="flex flex-wrap -m-2">
             <div
-                class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer mr-4 select-none"
+                class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer m-2 select-none"
+                :class="[{'bg-pink-500': vegi}]"
+                @click="vegi = !vegi"
+                v-if="false"
+            >
+              <span>Vegi</span>
+              <svg width="42"
+                   height="32"
+                   viewBox="0 0 42 32"
+                   fill="none"
+                   xmlns="http://www.w3.org/2000/svg"
+                   class="h-[1em] w-[1em] ml-2"
+                   v-if="vegi">
+                <path d="M14 24.73L4.27 15L0.956665 18.29L14 31.3333L42 3.33333L38.71 0.0433331L14 24.73Z"
+                      fill="currentColor"/>
+              </svg>
+            </div>
+            <div
+                class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer m-2 select-none"
                 :class="[{'bg-pink-500': explicitIngredientsFilter},{'pointer-events-none opacity-20 bg-transparent':!enableExplicitIngredientsFilterButton}]"
                 v-show="showExplicitIngredientsFilterButton"
                 @click="toggleExplicitIngredientsFilter"
@@ -49,14 +67,14 @@
               </svg>
             </div>
             <div
-                class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center cursor-pointer"
+                class="bg-gray-800 font-semibold rounded-sm md:hover:bg-pink-500 button flex justify-center items-center m-2 cursor-pointer"
                 v-show="selectedIngredients.length > 0"
                 @click="resetIngredients"
             >Mach Weg
             </div>
           </div>
         </div>
-        <div class="grid grid-cols-2 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3">
+        <div class="grid grid-cols-2 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 gap-4">
           <ingredient :data="ingredient"
                       @ingredientToggled="updateSelectedIngredient"
                       v-for="ingredient in ingredients"
@@ -81,6 +99,7 @@
 </template>
 
 <script>
+// TODO[mr]: was machen wir mit vegi und ohne? (12.02.22 mr)
 import Axios from 'axios';
 import Config from '../config.js';
 import Pizza from './Pizza';
@@ -96,6 +115,7 @@ export default {
       activeRestaurants: [],
       selectedIngredients: [],
       explicitIngredientsFilter: false,
+      vegi: false,
     };
   },
   computed: {
@@ -299,7 +319,7 @@ export default {
               return {
                 id: item.id,
                 ...item.fields,
-                active: true,
+                active: !item.fields.disable,
                 ingredients: [...new Set(item.fields.ingredients)]
               };
             });
@@ -326,6 +346,7 @@ export default {
               return {
                 id: item.id,
                 ...item.fields,
+                vegetarian: item.fields.meat.filter(ingredient => ingredient).length === 0
               };
             });
 
