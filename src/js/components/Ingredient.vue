@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     unsplashUrl() {
-      return `https://source.unsplash.com/${this.data.unsplashId}/270x180`;
+      return `/img/${this.data.unsplashId}.jpg`;
     },
   },
   methods: {
